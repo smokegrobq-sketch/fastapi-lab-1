@@ -44,7 +44,7 @@ Useful URLs:
 
 ## Users CRUD
 
-Temporary user data is stored in an in-memory dictionary.
+User data is stored in PostgreSQL through async SQLAlchemy sessions.
 
 Available endpoints:
 
@@ -53,3 +53,32 @@ Available endpoints:
 - `POST /users/`
 - `PUT /users/{user_id}`
 - `DELETE /users/{user_id}`
+
+## Database Models
+
+The project uses PostgreSQL, async SQLAlchemy and Alembic migrations.
+
+Models:
+
+- `User`
+- `Profile`
+- `Category`
+- `Product`
+- `Order`
+- `OrderItem`
+
+Relationships:
+
+- `User` one-to-one `Profile`
+- `User` one-to-many `Order`
+- `Category` one-to-many `Product`
+- `Order` one-to-many `OrderItem`
+- `Product` one-to-many `OrderItem`
+
+Run migrations manually:
+
+```bash
+poetry run alembic upgrade head
+```
+
+When running with Docker Compose, migrations run before the FastAPI server starts.

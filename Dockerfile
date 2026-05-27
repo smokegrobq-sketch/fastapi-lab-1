@@ -16,4 +16,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["poetry", "run", "python", "-m", "app.entrypoint"]
+CMD ["sh", "-c", "poetry run alembic upgrade head && poetry run python -m app.entrypoint"]

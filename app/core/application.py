@@ -1,9 +1,12 @@
-import os
-
 from fastapi import FastAPI
-from psycopg import connect
+from sqlalchemy import text
 
+from app.api.categories import router as categories_router
+from app.api.orders import router as orders_router
+from app.api.products import router as products_router
+from app.api.profiles import router as profiles_router
 from app.api.users import router as users_router
+from app.db.session import async_session_factory
 
 
 def create_app() -> FastAPI:
@@ -13,6 +16,10 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(users_router)
+    app.include_router(profiles_router)
+    app.include_router(categories_router)
+    app.include_router(products_router)
+    app.include_router(orders_router)
 
     @app.get("/")
     def read_root() -> dict[str, str]:
@@ -23,16 +30,9 @@ def create_app() -> FastAPI:
         return {"status": "ok"}
 
     @app.get("/db-health")
-    def database_health_check() -> dict[str, str]:
-        database_url = os.getenv("DATABASE_URL")
-
-        if not database_url:
-            return {"database": "not configured"}
-
-        with connect(database_url) as connection:
-            with connection.cursor() as cursor:
-                cursor.execute("SELECT 1")
-                cursor.fetchone()
+    async def database_health_check() -> dict[str, str]:
+        async with async_session_factory() as session:
+            await session.execute(text("SELECT 1"))
 
         return {"database": "ok"}
 
