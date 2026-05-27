@@ -1,0 +1,22 @@
+Docker run status
+=================
+
+Docker Desktop was installed, but the local Windows environment cannot start
+the Docker Linux engine yet because WSL is not installed/available.
+
+Observed checks:
+
+- docker --version works after installation.
+- docker compose version works after installation.
+- docker info fails because Docker Desktop cannot start the Linux engine.
+- wsl --status reports that Windows Subsystem for Linux is not installed.
+
+Because of that system-level blocker, real screenshots of running containers
+and the package list inside the running FastAPI container could not be captured
+yet.
+
+After WSL is installed and Docker Desktop is running, use:
+
+docker compose up --build
+docker compose ps
+docker compose exec api python -m pip list

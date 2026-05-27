@@ -1,0 +1,48 @@
+Lab 2 command sequence
+======================
+
+1. Switch to production branch:
+   git switch prod
+
+2. Add Docker files for FastAPI and PostgreSQL:
+   Dockerfile
+   docker-compose.yml
+   .dockerignore
+   .env.example
+
+3. Update Poetry lock file:
+   poetry lock
+
+4. Install dependencies and run tests:
+   poetry install
+   poetry run pytest
+
+5. Commit and push production branch:
+   git add .gitignore README.md app/main.py poetry.lock pyproject.toml .dockerignore .env.example Dockerfile docker-compose.yml
+   git commit -m "Add Docker Compose setup for FastAPI and Postgres"
+   git push origin prod
+
+6. Switch to development branch and add production changes:
+   git switch dev
+   git merge prod --no-edit
+
+7. Commands required to run the two containers:
+   docker compose up --build
+
+8. Commands required to verify running containers:
+   docker compose ps
+   docker ps
+
+9. Commands required to check installed libraries inside the FastAPI container:
+   docker compose exec api poetry show
+   docker compose exec api python -m pip list
+
+10. Commands required to check the FastAPI application:
+    curl http://127.0.0.1:8000/
+    curl http://127.0.0.1:8000/health
+    curl http://127.0.0.1:8000/db-health
+
+11. Commit and push development branch:
+    git add lab2
+    git commit -m "Add lab 2 report materials"
+    git push origin dev

@@ -26,5 +26,3 @@ build/
 *.log
 !git_logs.txt
 
-lab2/screenshots/
-!lab2/screenshots/.gitkeep
