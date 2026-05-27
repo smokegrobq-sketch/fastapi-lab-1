@@ -1,1 +1,1 @@
-"""Temporary in-memory storages."""
+"""Deprecated storage package kept for compatibility."""

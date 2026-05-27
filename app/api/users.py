@@ -1,19 +1,23 @@
 from fastapi import APIRouter, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import Depends
 
+from app.crud.common import create_one, delete_one, get_many, get_one, update_one
+from app.db.session import get_session
+from app.models.user import User
 from app.schemas.users import UserCreate, UserRead, UserUpdate
-from app.storage.users import users_storage
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.get("/", response_model=list[UserRead])
-def get_users() -> list[UserRead]:
-    return list(users_storage.values())
+async def get_users(session: AsyncSession = Depends(get_session)) -> list[User]:
+    return await get_many(session, User)
 
 
 @router.get("/{user_id}", response_model=UserRead)
-def get_user(user_id: int) -> UserRead:
-    user = users_storage.get(user_id)
+async def get_user(user_id: int, session: AsyncSession = Depends(get_session)) -> User:
+    user = await get_one(session, User, user_id)
 
     if user is None:
         raise HTTPException(
@@ -25,17 +29,20 @@ def get_user(user_id: int) -> UserRead:
 
 
 @router.post("/", response_model=UserRead, status_code=status.HTTP_201_CREATED)
-def create_user(user_data: UserCreate) -> UserRead:
-    next_id = max(users_storage.keys(), default=0) + 1
-    user = UserRead(id=next_id, **user_data.model_dump())
-    users_storage[next_id] = user
-
-    return user
+async def create_user(
+    user_data: UserCreate,
+    session: AsyncSession = Depends(get_session),
+) -> User:
+    return await create_one(session, User, user_data.model_dump())
 
 
 @router.put("/{user_id}", response_model=UserRead)
-def update_user(user_id: int, user_data: UserUpdate) -> UserRead:
-    stored_user = users_storage.get(user_id)
+async def update_user(
+    user_id: int,
+    user_data: UserUpdate,
+    session: AsyncSession = Depends(get_session),
+) -> User:
+    stored_user = await get_one(session, User, user_id)
 
     if stored_user is None:
         raise HTTPException(
@@ -44,18 +51,20 @@ def update_user(user_id: int, user_data: UserUpdate) -> UserRead:
         )
 
     update_data = user_data.model_dump(exclude_unset=True)
-    updated_user = stored_user.model_copy(update=update_data)
-    users_storage[user_id] = updated_user
-
-    return updated_user
+    return await update_one(stored_user, session, update_data)
 
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_user(user_id: int) -> None:
-    if user_id not in users_storage:
+async def delete_user(
+    user_id: int,
+    session: AsyncSession = Depends(get_session),
+) -> None:
+    user = await get_one(session, User, user_id)
+
+    if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found",
         )
 
-    del users_storage[user_id]
+    await delete_one(session, user)

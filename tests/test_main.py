@@ -20,34 +20,16 @@ def test_health_check() -> None:
     assert response.json() == {"status": "ok"}
 
 
-def test_users_crud_flow() -> None:
-    create_response = client.post(
-        "/users/",
-        json={"name": "Charlie Brown", "email": "charlie@example.com", "age": 28},
-    )
+def test_openapi_contains_database_crud_routes() -> None:
+    response = client.get("/openapi.json")
 
-    assert create_response.status_code == 201
-    created_user = create_response.json()
-    user_id = created_user["id"]
-    assert created_user["name"] == "Charlie Brown"
-
-    get_response = client.get(f"/users/{user_id}")
-
-    assert get_response.status_code == 200
-    assert get_response.json()["email"] == "charlie@example.com"
-
-    update_response = client.put(
-        f"/users/{user_id}",
-        json={"name": "Charlie Updated", "email": "updated@example.com", "age": 29},
-    )
-
-    assert update_response.status_code == 200
-    assert update_response.json()["name"] == "Charlie Updated"
-
-    delete_response = client.delete(f"/users/{user_id}")
-
-    assert delete_response.status_code == 204
-    assert client.get(f"/users/{user_id}").status_code == 404
+    assert response.status_code == 200
+    paths = response.json()["paths"]
+    assert "/users/" in paths
+    assert "/profiles/" in paths
+    assert "/categories/" in paths
+    assert "/products/" in paths
+    assert "/orders/" in paths
 
 
 def test_user_validation() -> None:

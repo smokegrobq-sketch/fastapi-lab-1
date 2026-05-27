@@ -2,7 +2,7 @@ services:
   api:
     build: .
     container_name: fastapi_lab_api
-    command: poetry run python -m app.entrypoint
+    command: sh -c "poetry run alembic upgrade head && poetry run python -m app.entrypoint"
     env_file:
       - .env.example
     ports:
