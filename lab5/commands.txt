@@ -1,0 +1,49 @@
+Lab 5 command sequence
+======================
+
+1. Switch to production branch:
+   git switch prod
+
+2. Add JWT and password hashing dependencies:
+   pyjwt
+   pwdlib[argon2]
+
+3. Add auth settings through Pydantic Settings:
+   JWT_SECRET_KEY
+   JWT_ALGORITHM
+   JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+
+4. Add salted password hashes to the database:
+   alembic/versions/20260527_0002_add_user_password_hashes.py
+
+5. Add authentication endpoints:
+   POST /auth/register
+   POST /auth/login
+   POST /auth/logout
+
+6. Add protected endpoints:
+   GET /me/
+   GET /me/profile
+   GET /me/orders
+
+7. Run checks:
+   poetry lock
+   poetry install
+   poetry run pytest
+
+8. Commit and push production branch:
+   git add .env.example README.md app alembic poetry.lock pyproject.toml tests
+   git commit -m "Add JWT cookie authentication"
+   git push origin prod
+
+9. Switch to development branch and add production changes:
+   git switch dev
+   git merge prod --no-edit
+
+Security notes
+==============
+
+- Real JWT secrets must be stored in .env or environment variables.
+- Real passwords must never be committed.
+- Passwords are stored in the database only as salted Argon2 hashes.
+- JWT is returned in the response and stored in an httpOnly cookie.
