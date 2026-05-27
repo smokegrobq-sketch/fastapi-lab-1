@@ -1,0 +1,42 @@
+Lab 3 command sequence
+======================
+
+1. Switch to production branch:
+   git switch prod
+
+2. Add Users CRUD with routers, Pydantic schemas and dictionary storage:
+   app/api/users.py
+   app/schemas/users.py
+   app/storage/users.py
+   app/core/application.py
+   app/entrypoint.py
+
+3. Update Docker startup through the entrypoint:
+   Dockerfile
+   docker-compose.yml
+
+4. Update Poetry lock and run tests:
+   poetry lock
+   poetry install
+   poetry run pytest
+
+5. Commit and push production branch:
+   git add Dockerfile README.md app docker-compose.yml poetry.lock pyproject.toml tests
+   git commit -m "Add users CRUD with routers and schemas"
+   git push origin prod
+
+6. Switch to development branch and add production changes:
+   git switch dev
+   git merge prod --no-edit
+
+7. Postman requests used for verification:
+   GET    http://127.0.0.1:8000/users/
+   POST   http://127.0.0.1:8000/users/
+   GET    http://127.0.0.1:8000/users/{id}
+   PUT    http://127.0.0.1:8000/users/{id}
+   DELETE http://127.0.0.1:8000/users/{id}
+
+8. Commit and push development branch:
+   git add lab3
+   git commit -m "Add lab 3 Postman verification materials"
+   git push origin dev

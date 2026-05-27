@@ -1,0 +1,44 @@
+Lab 3 Postman verification
+==========================
+
+The Users CRUD API contains:
+
+- GET /users/
+- GET /users/{user_id}
+- POST /users/
+- PUT /users/{user_id}
+- DELETE /users/{user_id}
+
+Request body used for POST:
+
+{
+  "name": "Charlie Brown",
+  "email": "charlie@example.com",
+  "age": 28
+}
+
+Request body used for PUT:
+
+{
+  "name": "Charlie Updated",
+  "email": "updated@example.com",
+  "age": 29
+}
+
+Expected successful responses:
+
+- POST returns 201 Created
+- GET returns 200 OK
+- PUT returns 200 OK
+- DELETE returns 204 No Content
+- GET after DELETE returns 404 Not Found
+
+Validation check:
+
+{
+  "name": "A",
+  "email": "not-email",
+  "age": 0
+}
+
+Expected validation response: 422 Unprocessable Entity.

@@ -1,0 +1,63 @@
+{
+  "info": {
+    "name": "FastAPI Lab 3 Users CRUD",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get users",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/users/"
+      }
+    },
+    {
+      "name": "Create user",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Charlie Brown\",\n  \"email\": \"charlie@example.com\",\n  \"age\": 28\n}"
+        },
+        "url": "http://127.0.0.1:8000/users/"
+      }
+    },
+    {
+      "name": "Get user by id",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/users/3"
+      }
+    },
+    {
+      "name": "Update user",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Charlie Updated\",\n  \"email\": \"updated@example.com\",\n  \"age\": 29\n}"
+        },
+        "url": "http://127.0.0.1:8000/users/3"
+      }
+    },
+    {
+      "name": "Delete user",
+      "request": {
+        "method": "DELETE",
+        "url": "http://127.0.0.1:8000/users/3"
+      }
+    }
+  ]
+}
