@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "fastapi-lab-1"
+version = "0.1.0"
+description = "Template FastAPI project for laboratory work 1."
+authors = ["Student <student@example.com>"]
+readme = "README.md"
+packages = [{ include = "app" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.0"
+uvicorn = { extras = ["standard"], version = "^0.34.0" }
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.0"
+httpx = "^0.28.0"
+
+[tool.poetry.scripts]
+start = "app.main:start"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
