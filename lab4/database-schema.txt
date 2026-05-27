@@ -1,0 +1,55 @@
+Lab 4 database schema
+=====================
+
+users
+- id
+- name
+- email
+- age
+
+profiles
+- id
+- user_id
+- phone
+- address
+
+categories
+- id
+- name
+- description
+
+products
+- id
+- category_id
+- name
+- price
+- stock
+
+orders
+- id
+- user_id
+- status
+
+order_items
+- id
+- order_id
+- product_id
+- quantity
+
+Relationships
+=============
+
+- users 1:1 profiles
+- users 1:N orders
+- categories 1:N products
+- orders 1:N order_items
+- products 1:N order_items
+
+Seed data is inserted by Alembic migration:
+
+- 2 users
+- 2 profiles
+- 2 categories
+- 2 products
+- 2 orders
+- 2 order_items

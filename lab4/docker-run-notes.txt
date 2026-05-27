@@ -1,0 +1,13 @@
+Docker/PostgreSQL screenshot status
+===================================
+
+The project is configured to run PostgreSQL and FastAPI through Docker Compose,
+and the API container runs Alembic migrations before starting FastAPI.
+
+Real database screenshots could not be captured on this machine yet because
+Docker Desktop cannot start its Linux engine without WSL. This is the same
+system-level blocker found during Lab 2.
+
+After WSL is installed and Docker Desktop is running, use the commands from
+lab4/commands.txt to start the database and capture real screenshots from psql
+or a database GUI.

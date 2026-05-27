@@ -1,0 +1,66 @@
+Lab 4 command sequence
+======================
+
+1. Switch to production branch:
+   git switch prod
+
+2. Add async PostgreSQL dependencies:
+   sqlalchemy[asyncio]
+   asyncpg
+   alembic
+   pydantic-settings
+
+3. Add Pydantic settings config:
+   app/core/config.py
+
+4. Add async database engine and session factory:
+   app/db/base.py
+   app/db/session.py
+
+5. Add SQLAlchemy models:
+   app/models/user.py
+   app/models/profile.py
+   app/models/category.py
+   app/models/product.py
+   app/models/order.py
+   app/models/order_item.py
+
+6. Add Alembic migration with tables and seed rows:
+   alembic/versions/20260527_0001_create_shop_schema.py
+
+7. Replace dictionary storage with real async database CRUD:
+   app/crud/common.py
+   app/api/users.py
+   app/api/profiles.py
+   app/api/categories.py
+   app/api/products.py
+   app/api/orders.py
+
+8. Update Docker startup:
+   poetry run alembic upgrade head
+   poetry run python -m app.entrypoint
+
+9. Update lock file and run tests:
+   poetry lock
+   poetry install
+   poetry run pytest
+
+10. Commit and push production branch:
+    git add .
+    git commit -m "Connect app to async Postgres with Alembic"
+    git push origin prod
+
+11. Switch to development branch and add production changes:
+    git switch dev
+    git merge prod --no-edit
+
+12. Commands to run when Docker Desktop + WSL are available:
+    docker compose up --build
+    docker compose exec api poetry run alembic current
+    docker compose exec db psql -U fastapi_user -d fastapi_lab -c "\dt"
+    docker compose exec db psql -U fastapi_user -d fastapi_lab -c "SELECT * FROM users;"
+    docker compose exec db psql -U fastapi_user -d fastapi_lab -c "SELECT * FROM profiles;"
+    docker compose exec db psql -U fastapi_user -d fastapi_lab -c "SELECT * FROM categories;"
+    docker compose exec db psql -U fastapi_user -d fastapi_lab -c "SELECT * FROM products;"
+    docker compose exec db psql -U fastapi_user -d fastapi_lab -c "SELECT * FROM orders;"
+    docker compose exec db psql -U fastapi_user -d fastapi_lab -c "SELECT * FROM order_items;"
