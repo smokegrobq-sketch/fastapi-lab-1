@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends
 
 from app.crud.common import create_one, delete_one, get_many, get_one, update_one
+from app.core.security import hash_password
 from app.db.session import get_session
 from app.models.user import User
 from app.schemas.users import UserCreate, UserRead, UserUpdate
@@ -33,7 +34,10 @@ async def create_user(
     user_data: UserCreate,
     session: AsyncSession = Depends(get_session),
 ) -> User:
-    return await create_one(session, User, user_data.model_dump())
+    payload = user_data.model_dump()
+    password = payload.pop("password")
+    payload["hashed_password"] = hash_password(password)
+    return await create_one(session, User, payload)
 
 
 @router.put("/{user_id}", response_model=UserRead)

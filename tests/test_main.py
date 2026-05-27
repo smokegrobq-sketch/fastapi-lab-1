@@ -25,6 +25,11 @@ def test_openapi_contains_database_crud_routes() -> None:
 
     assert response.status_code == 200
     paths = response.json()["paths"]
+    assert "/auth/register" in paths
+    assert "/auth/login" in paths
+    assert "/me/" in paths
+    assert "/me/profile" in paths
+    assert "/me/orders" in paths
     assert "/users/" in paths
     assert "/profiles/" in paths
     assert "/categories/" in paths

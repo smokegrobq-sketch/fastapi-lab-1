@@ -54,6 +54,23 @@ Available endpoints:
 - `PUT /users/{user_id}`
 - `DELETE /users/{user_id}`
 
+## Authentication
+
+Authentication uses JWT access tokens stored in an httpOnly cookie.
+Passwords are stored only as salted hashes in the database.
+
+Available endpoints:
+
+- `POST /auth/register`
+- `POST /auth/login`
+- `POST /auth/logout`
+- `GET /me/`
+- `GET /me/profile`
+- `GET /me/orders`
+
+Real secrets must be provided through `.env` or environment variables. Do not
+commit real passwords, tokens or production JWT secrets.
+
 ## Database Models
 
 The project uses PostgreSQL, async SQLAlchemy and Alembic migrations.
