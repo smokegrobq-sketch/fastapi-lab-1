@@ -41,3 +41,15 @@ Useful URLs:
 - `http://127.0.0.1:8000`
 - `http://127.0.0.1:8000/docs`
 - `http://127.0.0.1:8000/db-health`
+
+## Users CRUD
+
+Temporary user data is stored in an in-memory dictionary.
+
+Available endpoints:
+
+- `GET /users/`
+- `GET /users/{user_id}`
+- `POST /users/`
+- `PUT /users/{user_id}`
+- `DELETE /users/{user_id}`
